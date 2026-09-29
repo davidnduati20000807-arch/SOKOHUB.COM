@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a4d8c">
+  <title>SokoHub – Shop and Sell (Learning Project)</title>
+  <style>
+    :root{--bg:#f1f4f9;--card:#fff;--ink:#12202f;--mute:#5b6a7d;--line:#dbe2ec;--brand:#0a4d8c;--bi:#fff;--acc:#f59e0b;--ok:#15803d;--hot:#dc2626;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+    @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1520;--card:#162131;--ink:#eaf0f8;--mute:#9fb0c6;--line:#27364b;--brand:#5aa9ff;--bi:#06121f;--ok:#4ade80;--hot:#ff7b7b}}
+    :root[data-theme="dark"]{--bg:#0d1520;--card:#162131;--ink:#eaf0f8;--mute:#9fb0c6;--line:#27364b;--brand:#5aa9ff;--bi:#06121f;--ok:#4ade80;--hot:#ff7b7b}
+    *{box-sizing:inherit}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI","Trebuchet MS",system-ui,sans-serif;line-height:1.45;font-size:15px;padding-bottom:calc(66px + env(safe-area-inset-bottom,0px))}
+    button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
+    :focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+    .note{background:var(--ink);color:var(--bg);font-size:12px;padding:6px 12px;text-align:center}
+    header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--brand);color:var(--bi);padding:10px 14px;display:grid;gap:8px}
+    .r1{display:flex;gap:8px;align-items:center}.logo{font-weight:800;font-size:22px;margin-right:auto;cursor:pointer}
+    .hb{background:rgba(255,255,255,.16);color:inherit;border:0;border-radius:8px;padding:8px 11px}
+    header input{width:100%;padding:11px 13px;border:0;border-radius:8px;background:var(--card);color:var(--ink)}
+    .cats{display:flex;gap:6px;overflow-x:auto;padding:10px 14px 2px;max-width:1240px;margin:0 auto;scrollbar-width:none}
+    .chip{white-space:nowrap;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:7px 13px}
+    .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+    main{max-width:1240px;margin:0 auto;padding:10px 14px}
+    .flash{background:linear-gradient(90deg,var(--hot),#f97316);color:#fff;border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;font-size:13px}
+    .filters select{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:7px}
+    .shophd{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:10px;display:grid;gap:6px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:10px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;position:relative;display:flex;flex-direction:column;transition:box-shadow .15s}
+    .card:hover{box-shadow:0 4px 14px rgba(0,0,0,.14)}
+    .img{aspect-ratio:1;display:grid;place-items:center;font-size:42px;font-weight:800;color:rgba(255,255,255,.93);border:0;width:100%}
+    .tag{position:absolute;top:6px;left:6px;background:var(--card);border-radius:6px;font-size:11px;font-weight:700;padding:2px 7px}
+    .tag.u{background:var(--acc);color:#1a1200}
+    .heart{position:absolute;top:6px;right:6px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--hot)}
+    .b{padding:9px;display:flex;flex-direction:column;gap:3px;flex:1}
+    .nm{font-size:13.5px;min-height:2.6em}.pr{font-weight:800;font-size:16px}
+    .od{color:var(--mute);text-decoration:line-through;font-size:12px;margin-left:5px}
+    .sub{font-size:12px;color:var(--mute)}.ver{color:var(--ok);font-weight:700}.st{color:#d97706}
+    .link{background:none;border:0;padding:0;color:var(--brand);text-align:left;font-size:12px;text-decoration:underline}
+    .btn{background:var(--brand);color:var(--bi);border:0;border-radius:8px;padding:9px;font-weight:700}
+    .btn.a{background:var(--acc);color:#1a1200}.btn.g{background:none;border:1px solid var(--line);color:var(--ink);font-weight:400}
+    .card .btn{margin-top:auto}
+    .empty,.more{grid-column:1/-1;text-align:center;padding:30px;color:var(--mute)}
+    dialog{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);width:min(480px,calc(100% - 20px));padding:0;max-height:90vh;overflow:auto}
+    dialog::backdrop{background:rgba(0,0,0,.55)}
+    .dimg{aspect-ratio:16/7;display:grid;place-items:center;font-size:60px;font-weight:800;color:#fff}
+    .db{padding:16px;display:grid;gap:9px}.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .row{display:flex;justify-content:space-between;gap:8px;align-items:center;border-bottom:1px solid var(--line);padding:8px 0;font-size:14px}
+    .q button{width:28px;height:28px;border:1px solid var(--line);background:var(--bg);border-radius:6px}
+    label{display:grid;gap:3px;font-size:13px;color:var(--mute)}
+    label input,label select,label textarea,.msg input{padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+    .opt{border:1px solid var(--line);border-radius:8px;padding:8px;font-size:13px}
+    .tot{display:flex;justify-content:space-between;font-weight:800;font-size:17px}
+    .rev{border-top:1px solid var(--line);padding-top:8px;font-size:13px}
+    .chat{display:grid;gap:6px;max-height:44vh;overflow:auto;padding:4px}
+    .bub{max-width:80%;padding:8px 11px;border-radius:12px;background:var(--bg);font-size:14px}
+    .bub.me{justify-self:end;background:var(--brand);color:var(--bi)}
+    .msg{display:flex;gap:6px}.msg input{flex:1}
+    .step{display:flex;gap:8px;font-size:13px;color:var(--mute)}.step.d{color:var(--ok);font-weight:600}
+    details{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px}summary{cursor:pointer;font-weight:600}
+    .tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom,0px)}
+    .tabs button{background:none;border:0;padding:11px 2px;font-size:12px;color:var(--mute)}
+    .tabs button[aria-current="true"]{color:var(--brand);font-weight:700}
+    #toast{position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:99px;z-index:20;display:none;font-size:14px}
+    @media(prefers-reduced-motion:reduce){.card{transition:none}}
+  </style>
+</head>
+<body>
+  <div class="note">Learning project: sellers, products, reviews and payments are simulated. No real money is taken.</div>
+  <header>
+    <div class="r1">
+      <div class="logo" id="logo">SokoHub</div>
+      <select class="hb" id="loc" aria-label="Location"></select>
+      <button class="hb" id="th" aria-label="Toggle theme">◐</button>
+      <span class="hb" id="acct" style="display:none"></span>
+      <select class="hb" id="lg" aria-label="Language"><option value="en">English</option><option value="sw">Kiswahili</option></select>
+      <button class="hb" id="sv">♥ Saved (<span id="wc">0</span>)</button>
+    </div>
+    <input id="q" type="search" placeholder="Search millions of items, brands, shops" aria-label="Search">
+  </header>
+  <div class="cats" id="cats" role="group" aria-label="Categories"></div>
+  <main>
+    <div class="flash"><span><b>Flash sale:</b> extra 10% off Phones &amp; Electronics</span><span>Ends in <b id="clock">--:--:--</b></span></div>
+    <div class="flash" style="background:linear-gradient(90deg,var(--brand),#2563eb)"><span><b>Own a business?</b> Sell on SokoHub and reach buyers across Kenya.</span><button class="btn a" data-join>Become a seller</button></div>
+    <div id="shophd"></div>
+    <div class="filters">
+      <select id="cond" aria-label="Condition"><option value="">New and used</option><option value="New">New</option><option value="Used">Used</option></select>
+      <select id="sell" aria-label="Seller type"><option value="">All sellers</option><option value="Store">Store</option><option value="Individual">Individual</option></select>
+      <select id="sort" aria-label="Sort"><option value="rel">Best match</option><option value="lo">Price: low first (loaded)</option><option value="hi">Price: high first (loaded)</option></select>
+      <label style="display:flex;flex-direction:row;gap:6px;align-items:center">Max price <input id="max" type="range" min="0" max="100" value="100"><span id="mv" style="min-width:76px"></span></label>
+      <button class="btn g" id="clr" style="padding:7px 10px">Clear filters</button>
+    </div>
+    <div id="recent"></div>
+    <div class="grid" id="grid"></div>
+    <div class="more" id="sent">Loading more…</div>
+  </main>
+  <footer style="max-width:1240px;margin:0 auto;padding:6px 14px 24px;display:flex;gap:16px;flex-wrap:wrap">
+    <button class="link" data-info="about">About</button>
+    <button class="link" data-info="terms">Terms</button>
+    <button class="link" data-info="privacy">Privacy</button>
+    <button class="link" data-info="contact">Contact</button>
+    <button class="link" data-top>Back to top</button>
+  </footer>
+  <nav class="tabs" aria-label="Main">
+    <button data-t="home" aria-current="true">Home</button>
+    <button data-t="orders">Orders</button>
+    <button data-t="post">Sell</button>
+    <button data-t="help">Help</button>
+    <button data-t="cart">Cart (<span id="cc">0</span>)</button>
+  </nav>
+  <div id="toast" role="status"></div>
+  <dialog id="dp"></dialog>
+  <dialog id="dc"></dialog>
+  <dialog id="dn"></dialog>
+
+  <script>
+    // ---------- UTILITIES ----------
+    const sm = d => { if (!d.open) d.showModal(); };
+    const $ = i => document.getElementById(i);
+    const f = n => "KSh " + Math.round(n).toLocaleString();
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const LOC = ["Nairobi", "Mombasa", "Kisumu", "Nakuru", "Eldoret", "Thika", "Nyeri", "Machakos"];
+    const CAT = {
+      "Phones & Tablets": [["Smartphone 128GB", 19000], ["Budget phone 64GB", 8500], ["Tablet 10in", 16000], ["Phone case", 400], ["Fast charger", 900]],
+      "Computers": [["Laptop 8GB", 42000], ["Wireless mouse", 900], ["Keyboard", 1500], ["Printer", 12000], ["Flash drive 64GB", 800]],
+      "Electronics": [["Earbuds", 2500], ["Smartwatch", 4800], ["Bluetooth speaker", 1900], ["43in Smart TV", 32000], ["Power bank", 1800], ["Camera", 26000]],
+      "Fashion": [["Denim jacket", 2800], ["Cotton tee pack", 1300], ["Dress", 2400], ["Suit", 9500], ["Sunglasses", 900]],
+      "Shoes & Bags": [["Running shoes", 3000], ["Leather shoes", 4200], ["Handbag", 2200], ["Backpack", 2400]],
+      "Home & Kitchen": [["Pan set", 3500], ["Bed sheet set", 2400], ["Blender", 3200], ["Sofa 3-seater", 28000], ["Storage box set", 1200]],
+      "Appliances": [["Electric kettle", 1600], ["Microwave", 9500], ["Fridge 200L", 28000], ["Washing machine", 34000], ["Iron box", 1500]],
+      "Beauty & Health": [["Face moisturizer", 900], ["Hair dryer", 2300], ["Perfume 50ml", 2700], ["Beard trimmer", 1900], ["Vitamin C pack", 1100]],
+      "Baby & Kids": [["Building blocks", 1500], ["Baby stroller", 8500], ["Diapers pack", 1400], ["School bag", 1300]],
+      "Groceries": [["Cooking oil 5L", 1500], ["Rice 10kg", 1900], ["Tea leaves 1kg", 700], ["Maize flour 10kg", 1200]],
+      "Sports": [["Football", 1200], ["Yoga mat", 1300], ["Dumbbell set", 4500], ["Bicycle", 14500]],
+      "Gaming": [["Game console", 48000], ["Controller", 4500], ["Gaming headset", 3800]],
+      "Automotive": [["Car tyre", 7500], ["Motorbike 150cc", 95000], ["Helmet", 2200], ["Car battery", 9500]],
+      "Books & Office": [["Notebook pack", 600], ["Office chair", 7800], ["Desk", 9800], ["Novel", 900]],
+      "Property": [["Studio to rent", 12000], ["2-bed apartment to rent", 38000], ["Plot 50x100", 1500000]],
+      "Services": [["House cleaning", 2500], ["Phone repair", 1500], ["Photography session", 8000], ["Moving service", 12000]]
+    };
+    const CN = Object.keys(CAT), NC = CN.length;
+    const BR = ["Nova", "Zenix", "Kito", "Orbit", "Maxa", "Luma", "Pride", "Savanna"];
+    const AD = ["Pro", "Lite", "Plus", "2025", "Classic", "Ultra", "Mini", "Max"];
+    const SN = ["Mama Njeri", "TechPoint", "Otieno", "Amina's", "Kip", "HomeNest", "Wanjiku", "Brian K.", "Baraka", "Zawadi", "Juma", "Neema"];
+    const SH = Array.from({ length: 24 }, (_, k) => ({
+      k, name: SN[k % 12] + (k < 12 ? " Stores" : " Traders"), store: k < 16, ver: k % 3 != 1,
+      city: LOC[k % 8], fol: 120 + k * 173 % 3000, since: 2016 + k % 9
+    }));
+    const C = ["#0a4d8c", "#0f8b8d", "#c2410c", "#be185d", "#4f46e5", "#65750f", "#7c3aed", "#b45309"];
+    const rnd = (i, k) => (Math.imul(i + 1, 2654435761) ^ Math.imul(k + 7, 40503)) >>> 0;
+    const r = (i, k) => rnd(i, k) % 1000 / 1000;
+
+    const UA = {};
+    let ucount = 0;
+    const cache = {};
+    function item(i) {
+      if (i >= 1e9) return UA[i];
+      if (cache[i]) return cache[i];
+      const cn = CN[i % NC], bs = CAT[cn][(i / NC | 0) % CAT[cn].length];
+      const pr = Math.max(50, Math.round(bs[1] * (.6 + r(i, 5) * 1.1) / 50) * 50);
+      return cache[i] = {
+        id: i, cat: cn,
+        name: (r(i, 3) < .6 ? BR[r(i, 1) * 8 | 0] + " " : "") + bs[0] + (r(i, 4) < .5 ? " " + AD[r(i, 2) * 8 | 0] : ""),
+        price: pr, old: Math.round(pr * (1.1 + r(i, 6) * .3) / 50) * 50,
+        cond: cn == "Services" || cn == "Groceries" ? "New" : r(i, 8) < .22 ? "Used" : "New",
+        loc: LOC[r(i, 9) * 8 | 0], sel: (rnd(i, 10) % 24), color: C[i % 8],
+        rate: +(3.6 + r(i, 11) * 1.3).toFixed(1), n: 8 + rnd(i, 12) % 900
+      };
+    }
+    const P = id => item(+id);
+    const price = p => p.price * (p.cat == "Electronics" || p.cat == "Phones & Tablets" ? .9 : 1);
+    const ST = k => SH[k] || { name: "You", store: false, ver: false, city: "Nairobi", fol: 0, since: 2026, k: -1 };
+
+    const POS = [
+      "Exactly as described and arrived quickly. Very happy.",
+      "Great quality for the price. Would buy again.",
+      "Seller was helpful and packaging was neat.",
+      "Works perfectly, better than I expected.",
+      "Fast delivery and easy pickup. Recommended."
+    ];
+    const MIX = [
+      "Decent, but delivery took longer than promised. A little disappointed.",
+      "Product is okay, though the finish is not as nice as the photos.",
+      "Works, but the battery/quality is average. Expected a bit more.",
+      "Packaging was damaged and I waited two days for a reply.",
+      "Fine for the price, but not quite what I hoped for."
+    ];
+    const RN = ["Achieng", "Kevin M.", "Faith W.", "Ali", "Grace N.", "Peter O.", "Mercy", "Dennis K."];
+    function reviews(p) {
+      const i = p.id, a = [
+        [5, POS[rnd(i, 20) % 5]],
+        [4, POS[rnd(i, 21) % 5]],
+        [rnd(i, 22) % 2 ? 3 : 2, MIX[rnd(i, 23) % 5]]
+      ];
+      if (r(i, 24) < .5) a.push([4, POS[rnd(i, 25) % 5]]);
+      const mine = JSON.parse(ls("sh_rev_" + i) || "[]");
+      return [...mine.map(x => [x[0], esc(x[1]), "You"]), ...a.map((x, k) => [x[0], x[1], RN[(i + k * 3) % 8]])];
+    }
+    function ls(k, v) {
+      try {
+        if (v === undefined) return localStorage.getItem(k);
+        localStorage.setItem(k, v);
+      } catch (e) {}
+    }
+    const J = (k, d) => {
+      try { return JSON.parse(ls(k) || d); } catch (e) { return JSON.parse(d); }
+    };
+
+    // ---------- STATE ----------
+    let S = {
+      cat: "All", q: "", loc: "", cond: "", sell: "", sort: "rel", max: 1e9,
+      view: "home", shop: null
+    };
+    let cart = J("sh_cart", "{}");
+    let wish = J("sh_wish", "[]");
+    let orders = J("sh_orders", "[]");
+    let ads = J("sh_ads", "[]");
+    ads.forEach(a => { UA[a.id] = a; ucount++; });
+    const save = () => {
+      ls("sh_cart", JSON.stringify(cart));
+      ls("sh_wish", JSON.stringify(wish));
+      ls("sh_orders", JSON.stringify(orders));
+    };
+    const cnt = () => Object.values(cart).reduce((a, b) => a + b, 0);
+    const toast = m => {
+      const t = $("toast");
+      t.textContent = m; t.style.display = "block";
+      clearTimeout(toast.h);
+      toast.h = setTimeout(() => t.style.display = "none", 2200);
+    };
+
+    // ---------- INIT UI ----------
+    $("loc").innerHTML = `<option value="">All Kenya</option>` + LOC.map(l => `<option>${l}</option>`).join("");
+    $("cats").innerHTML = ["All", ...CN].map(c => `<button class="chip" data-c="${c}" aria-pressed="${c == "All"}">${c}</button>`).join("");
+    const stars = n => "★".repeat(Math.round(n)) + "☆".repeat(5 - Math.round(n));
+
+    // ---------- CARD RENDER ----------
+    function card(p) {
+      const s = ST(p.sel);
+      return `<div class="card">
+        <button class="img" style="background:${p.color}" data-v="${p.id}" aria-label="View ${esc(p.name)}">${esc(p.name[0])}</button>
+        <span class="tag ${p.cond == "Used" ? "u" : ""}">${p.cond}</span>
+        <button class="heart" data-w="${p.id}" aria-label="Save">${wish.includes(p.id) ? "♥" : "♡"}</button>
+        <div class="b">
+          <div class="nm">${esc(p.name)}</div>
+          <div><span class="pr">${f(price(p))}</span><span class="od">${f(p.old)}</span></div>
+          <div class="sub"><span class="st">★</span> ${p.rate} (${p.n}) · ${p.loc}</div>
+          <button class="link" data-shop="${p.sel}">${s.ver ? '<span class="ver">✔</span> ' : ""}${esc(s.name)}</button>
+          <button class="btn" data-a="${p.id}">Add to cart</button>
+        </div>
+      </div>`;
+    }
+
+    // ---------- FILTER & LOAD ----------
+    const ok = p => !p.sold && (S.cat == "All" || p.cat == S.cat) && (!S.loc || p.loc == S.loc) &&
+      (!S.cond || p.cond == S.cond) && (S.shop === null || p.sel == S.shop) &&
+      (!S.sell || (S.sell == "Store") == ST(p.sel).store) && price(p) <= S.max &&
+      (p.name + " " + ST(p.sel).name + " " + p.cat).toLowerCase().includes(S.q);
+    let cur = 0, found = 0;
+    function reset() {
+      cur = 0; found = 0;
+      $("grid").innerHTML = ""; $("sent").style.display = "block";
+      $("shophd").innerHTML = S.shop !== null ? (s => `<div class="shophd"><h2 style="margin:0">${esc(s.name)} ${s.ver ? '<span class="ver">✔ Verified</span>' : ""}</h2><div class="sub">${s.store ? "Store" : "Individual"} · ${s.city} · ${s.fol.toLocaleString()} followers · Selling since ${s.since}</div><div class="two"><button class="btn" data-chat="${s.k}">Message shop</button><button class="btn g" data-fol="${s.k}">${J("sh_fol", "[]").includes(s.k) ? "Following" : "Follow"}</button><button class="btn g" data-all>Back to all items</button></div></div>`)(ST(S.shop)) : "";
+      { const rv = J("sh_recent", "[]").map(P).filter(Boolean); $("recent").innerHTML = (S.view == "home" && S.shop === null && S.cat == "All" && !S.q && rv.length) ? `<h3 style="margin:4px 0 8px">Recently viewed</h3><div class="grid" style="margin-bottom:14px">${rv.slice(0, 4).map(card).join("")}</div>` : ""; }
+      $("wc").textContent = wish.length;
+      document.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", b.dataset.c == S.cat));
+      document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.t == "home" && S.view == "home"));
+      $("mv").textContent = S.max >= 1e6 ? "Any price" : f(S.max);
+      if (S.view == "saved") {
+        const L = wish.map(P).filter(Boolean);
+        $("grid").innerHTML = L.length ? L.map(card).join("") : `<div class="empty">No saved items yet. Tap ♡ on any product.</div>`;
+        $("sent").style.display = "none";
+        return;
+      }
+      load();
+    }
+    function load() {
+      if (S.view == "saved") return;
+      let got = [], t = 0;
+      while (got.length < 24 && t < 4000) {
+        const k = cur++;
+        co
